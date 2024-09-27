@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/62c5fd58-79aa-4ab8-85df-a7bcca9bee0c)
+
 # Lessstudy: An AI-based Tool for Analyzing Repeated Questions
 
 **Lessstudy** is an AI-powered tool that helps students identify the most repeated and important questions across multiple exam question papers. The tool uses Google's Gemini API to analyze the content of five PDF files and categorize questions as **Most Repeated**, **Repeated**, or **Unique**.
