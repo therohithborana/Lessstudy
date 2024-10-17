@@ -64,8 +64,21 @@ if len(pdf_file_paths) == 5:
     """
 
     # Call the Gemini API to generate the content
-    response = genai.generate_content(query)
-    st.write(response.text)
+    response = genai.generate(messages=[{"content": query}])
+    
+    # Check if the response contains any content
+    if response and "content" in response[0]:
+        st.write(response[0]["content"])
+    else:
+        st.error("Failed to generate a valid response from the Gemini API.")
 
 else:
     st.warning("Please upload all 5 PDFs.")
+
+
+# Add credits at the bottom of the page
+st.markdown("""
+    <p style='text-align: center;'>
+    Made by <a href="https://www.linkedin.com/in/rohith-borana-b10778266" target="_blank">Rohith Borana</a>
+    </p>
+    """, unsafe_allow_html=True)
