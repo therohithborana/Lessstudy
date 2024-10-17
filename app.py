@@ -1,10 +1,13 @@
 import streamlit as st
 from pypdf import PdfReader
 import google.generativeai as genai
-import os
 
-# Configure the Gemini API key
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+# Configure the Gemini API key using Streamlit's secrets
+api_key = st.secrets["GOOGLE_API_KEY"]
+genai.configure(api_key=api_key)
+
+# Initialize the Gemini model
+model = genai.GenerativeModel('gemini-pro')
 
 # Function to extract text from a PDF file
 def extract_pdf_text(pdf_file_path):
@@ -31,7 +34,7 @@ for i in range(1, 6):
     pdf_file = st.file_uploader(f"Upload PDF {i}", type="pdf", key=f"pdf{i}")
     if pdf_file is not None:
         st.success(f'PDF {i} uploaded successfully.')
-        # Save the uploaded file
+        # Save the uploaded file to the local file system
         file_path = f"./QuesPap{i}.pdf"
         save_uploaded_file(pdf_file, file_path)
         pdf_file_paths.append(file_path)
@@ -64,17 +67,13 @@ if len(pdf_file_paths) == 5:
     """
 
     # Call the Gemini API to generate the content
-    response = genai.generate(messages=[{"content": query}])
+    response = model.generate_content(query)
     
-    # Check if the response contains any content
-    if response and "content" in response[0]:
-        st.write(response[0]["content"])
-    else:
-        st.error("Failed to generate a valid response from the Gemini API.")
+    # Display the result
+    st.write(response.text)
 
 else:
     st.warning("Please upload all 5 PDFs.")
-
 
 # Add credits at the bottom of the page
 st.markdown("""
